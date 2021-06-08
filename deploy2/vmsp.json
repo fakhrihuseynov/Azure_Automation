@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AdressPrefix": {
+            "value": "10.0.0.0/8"
+        },
+        "SubnetAdressPrefix": {
+            "value": "10.0.0.0/24"
+        },
+        "VnetDdosProtection": {
+            "value": false
+        },
+        "publicIpAddressType": {
+            "value": "dynamic"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "configurationMode": {
+            "value": "ApplyAndMonitor"
+        },
+        "actionAfterReboot": {
+            "value": "ContinueConfiguration"
+        },
+        "counter": {
+            "value": 2
+        },
+        "Password": {
+            "value": ""
+        },
+        "Username": {
+            "value": ""
+        },
+        "registrationKey": {
+            "value": ""
+        },
+        "registrationUrl": {
+            "value": ""
+        }
+    }
+}
