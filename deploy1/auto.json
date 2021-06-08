@@ -1,0 +1,92 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "credentialName": {
+      "type": "string"
+    },
+    "AppIdSecret": {
+      "type": "securestring"
+    },
+    "jobId": {
+      "type": "string"
+    },
+    "scriptUri": {
+      "type": "string"
+    },
+    "appID":{
+      "type": "string"
+    }
+  },
+  "variables": {
+    "runbookName": "Shutdown-ARM-VMs-Parallel",
+    "sku": "Free",
+    "accountname": "[concat('AutoAcc', uniqueString(resourceGroup().name))]"
+  },
+  "resources": [
+    {
+      "name": "[variables('accountName')]",
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2020-01-13-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
+      "tags": {},
+      "properties": {
+        "sku": {
+          "name": "[variables('sku')]"
+        }
+      },
+      "resources": [
+        {
+          "name": "[variables('runbookName')]",
+          "type": "runbooks",
+          "apiVersion": "2019-06-01",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', variables('accountName'))]"
+          ],
+          "properties": {
+            "runbookType": "Script",
+            "logProgress": false,
+            "logVerbose": false,
+            "publishContentLink": {
+              "uri": "[parameters('scriptUri')]",
+              "version": "1.0.0.0"
+            }
+          }
+        },
+        {
+          "name": "[parameters('credentialName')]",
+          "type": "credentials",
+          "apiVersion": "2020-01-13-preview",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', variables('accountName'))]"
+          ],
+          "properties": {
+            "userName": "[parameters('appID')]",
+            "password": "[parameters('AppIdSecret')]"
+          }
+        },
+        {
+          "name": "[parameters('jobId')]",
+          "type": "jobs",
+          "apiVersion": "2019-06-01",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', variables('accountName'))]",
+            "[variables('runbookName')]"
+          ],
+          "tags": {
+            "key": "value"
+          },
+          "properties": {
+            "runbook": {
+              "name": "[variables('runbookName')]"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

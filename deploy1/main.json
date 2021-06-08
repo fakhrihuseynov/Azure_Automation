@@ -1,0 +1,120 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AdressPrefix": {
+            "type": "string"
+        },
+        "SubnetAdressPrefix": {
+            "type": "string"
+        },
+        "VnetDdosProtection": {
+            "type": "bool"
+        },
+        "publicIpAddressType": {
+            "type": "string"
+        },
+        "virtualmachinesize": {
+            "type": "string"
+        },
+        "Password": {
+            "type": "securestring"
+        },
+        "Username": {
+            "type": "string"
+        },
+        "counter": {
+            "type": "int"
+        },
+        "scriptUri": {
+            "type": "securestring"
+        },
+        "jobID": {
+            "type": "string"
+        },
+        "credentialName": {
+            "type": "string"
+        },
+        "appID": {
+            "type": "string"
+        },
+        "AppIdSecret": {
+            "type": "securestring"
+        }
+    },
+    "variables": {
+        "git_link": "https://raw.githubusercontent.com/fakhrihuseynov/module9/main/"
+    },
+    "resources": [
+        {
+            "apiVersion": "2020-10-01",
+            "name": "VirtMachineLinkedTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('git_link'), 'vms.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "AdressPrefix": {
+                        "value": "[parameters('AdressPrefix')]"
+                    },
+                    "SubnetAdressPrefix": {
+                        "value": "[parameters('SubnetAdressPrefix')]"
+                    },
+                    "VnetDdosProtection": {
+                        "value": "[parameters('VnetDdosProtection')]"
+                    },
+                    "publicIpAddressType": {
+                        "value": "[parameters('publicIpAddressType')]"
+                    },
+                    "virtualMachineSize": {
+                        "value": "[parameters('virtualmachinesize')]"
+                    },
+                    "Password": {
+                        "value": "[parameters('Password')]"
+                    },
+                    "Username": {
+                        "value": "[parameters('Username')]"
+                    },
+                    "counter": {
+                        "value": "[parameters('counter')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "AutomationAccountTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "VirtMachineLinkedTemplate"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('git_link'), 'auto.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "credentialName": {
+                        "value": "[parameters('credentialName')]"
+                    },
+                    "AppIdSecret": {
+                        "value": "[parameters('AppIdSecret')]"
+                    },
+                    "jobId": {
+                        "value": "[parameters('jobID')]"
+                    },
+                    "scriptUri": {
+                        "value": "[parameters('scriptUri')]"
+                    },
+                    "appID": {
+                        "value": "[parameters('appID')]"
+                    }
+                }
+            }
+        }
+    ]
+}
