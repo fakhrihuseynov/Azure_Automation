@@ -3,7 +3,7 @@ workflow Shutdown-ARM-VMs-Parallel
 
 	$SubscriptionId         = Get-AutomationVariable -Name  "aeb44919-96b9-42cf-a108-0cec7dc86b31"
 	$TenantID               = Get-AutomationVariable -Name  "42a1205d-ebeb-47bb-bfd5-bcfad63e2353"
-	$CredentialAssetName    = Get-AutomationVariable -Name  "AppRegistrationPassword"
+	$CredentialAssetName    = Get-AutomationVariable -Name  "Mycredo313"
    
 	"CredentialAssetName: $CredentialAssetName"
 	#Get the credential with the above name from the Automation Asset store
