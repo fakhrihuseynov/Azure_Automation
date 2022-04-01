@@ -1,0 +1,5 @@
+This task is intended to give you a hands-on experience with various scenarios of AA usage. In 
+Task 1 you will get your hands dirty with AA ARM deployment and its usage for automating such regular 
+task as VM governance. In Task 2 you will enrich your experience with a fully automated solution, 
+which includes VM provisioning and initial configuration using ARM templates and configuration 
+management using Azure DSC engine
